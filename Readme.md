@@ -5,7 +5,7 @@
 This documentation provides details on installationa/setup and the API endpoints for managing items and suppliers in the inventory system. The API allows for the creation, retrieval, updating, and deletion of items and suppliers, as well as querying suppliers for a given item and items for a given supplier.
 
 ## Installation and Setup
-
+- **Note:** Run the command with git bash on Windows OS 
 1. Clone the repository.
     ```bash
     git clone https://github.com/dprograma/store.git
@@ -17,7 +17,8 @@ This documentation provides details on installationa/setup and the API endpoints
 3. Activate the virtual environment
     ```bash
     source venv/bin/activate # for Mac/Linux
-    venv\Scripts\activate # for Windows
+    venv\Scripts\activate # for Windows CMD
+    source venv/Scripts/activate # git bash on Windows
     ```
 4. Install the required packages:
     ```bash
