@@ -255,8 +255,11 @@ class SuppliersForItemApiView(generics.GenericAPIView):
     serializer_class = SupplierSerializer
 
     def get_queryset(self):
-        pk = self.kwargs["pk"]
-        item = Item.objects.get(pk=pk)
+        pk = self.kwargs['pk']
+        try:
+            item = Item.objects.get(pk=pk)
+        except Item.DoesNotExist:
+            raise NotFound(detail=f"Item with id {pk} does not exist")
         return item.suppliers.all()
 
     def get(self, request, *args, **kwargs):
@@ -277,6 +280,11 @@ class SuppliersForItemApiView(generics.GenericAPIView):
                 {"status": "error", "response_code": "99", "response": str(e)},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+        except Item.ObjectDoesNotExist as e:
+            return Response(
+                {"status": "error", "response_code": "99", "response": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
 class ItemForSupplierApiView(generics.GenericAPIView):
@@ -284,9 +292,13 @@ class ItemForSupplierApiView(generics.GenericAPIView):
     permission_classes = []
 
     def get_queryset(self):
-        pk = self.kwargs["pk"]
-        supplier = Supplier.objects.get(pk=pk)
+        pk = self.kwargs['pk']
+        try:
+            supplier = Supplier.objects.get(pk=pk)
+        except Supplier.DoesNotExist:
+            raise NotFound(detail=f"Supplier with id {pk} does not exist")
         return supplier.items.all()
+    
 
     def get(self, request, *args, **kwargs):
         """Method to retrieve items belonging to a particular supplier"""
