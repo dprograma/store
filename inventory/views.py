@@ -255,11 +255,11 @@ class SuppliersForItemApiView(generics.GenericAPIView):
     serializer_class = SupplierSerializer
 
     def get_queryset(self):
-        pk = self.kwargs['pk']
+        pk = self.kwargs["pk"]
         try:
             item = Item.objects.get(pk=pk)
-        except Item.DoesNotExist:
-            raise NotFound(detail=f"Item with id {pk} does not exist")
+        except Item.DoesNotExist as exc:
+            raise NotFound(detail=f"Item with id {pk} does not exist") from exc
         return item.suppliers.all()
 
     def get(self, request, *args, **kwargs):
@@ -292,13 +292,12 @@ class ItemForSupplierApiView(generics.GenericAPIView):
     permission_classes = []
 
     def get_queryset(self):
-        pk = self.kwargs['pk']
+        pk = self.kwargs["pk"]
         try:
             supplier = Supplier.objects.get(pk=pk)
-        except Supplier.DoesNotExist:
-            raise NotFound(detail=f"Supplier with id {pk} does not exist")
+        except Supplier.DoesNotExist as exc:
+            raise NotFound(detail=f"Supplier with id {pk} does not exist") from exc
         return supplier.items.all()
-    
 
     def get(self, request, *args, **kwargs):
         """Method to retrieve items belonging to a particular supplier"""

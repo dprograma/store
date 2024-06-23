@@ -196,19 +196,22 @@ class TestSuppliersForItemApiView:
         assert "Supplier 2" in supplier_names
 
     def test_get_suppliers_for_existing_item(self):
-        url = reverse('items_supplier', args=[self.item.id])
+        url = reverse("items_supplier", args=[self.item.id])
         response = self.client.get(url)
         assert response.status_code == status.HTTP_200_OK
-        assert len(response.data['response']) == 2
-        assert response.data['response'][0]['name'] == "Supplier 1"
-        assert response.data['response'][1]['name'] == "Supplier 2"
+        assert len(response.data["response"]) == 2
+        assert response.data["response"][0]["name"] == "Supplier 1"
+        assert response.data["response"][1]["name"] == "Supplier 2"
 
     def test_get_supplier_for_non_existing_item(self):
         non_existing_id = 9999
-        url = reverse('items_supplier', args=[non_existing_id])
+        url = reverse("items_supplier", args=[non_existing_id])
         response = self.client.get(url)
         assert response.status_code == status.HTTP_404_NOT_FOUND
-        assert response.data['detail'] == f"Item with id {non_existing_id} does not exist"
+        assert (
+            response.data["detail"] == f"Item with id {non_existing_id} does not exist"
+        )
+
 
 @pytest.mark.django_db
 class TestItemForSupplierApiView:
@@ -241,16 +244,19 @@ class TestItemForSupplierApiView:
         assert "Item 2" in item_names
 
     def test_get_items_for_existing_supplier(self):
-        url = reverse('suppliers_item', args=[self.supplier.id])
+        url = reverse("suppliers_item", args=[self.supplier.id])
         response = self.client.get(url)
         assert response.status_code == status.HTTP_200_OK
-        assert len(response.data['response']) == 2
-        assert response.data['response'][0]['name'] == "Item 1"
-        assert response.data['response'][1]['name'] == "Item 2"
+        assert len(response.data["response"]) == 2
+        assert response.data["response"][0]["name"] == "Item 1"
+        assert response.data["response"][1]["name"] == "Item 2"
 
     def test_get_items_for_non_existing_supplier(self):
         non_existing_id = 9999
-        url = reverse('suppliers_item', args=[non_existing_id])
+        url = reverse("suppliers_item", args=[non_existing_id])
         response = self.client.get(url)
         assert response.status_code == status.HTTP_404_NOT_FOUND
-        assert response.data['detail'] == f"Supplier with id {non_existing_id} does not exist"
+        assert (
+            response.data["detail"]
+            == f"Supplier with id {non_existing_id} does not exist"
+        )
